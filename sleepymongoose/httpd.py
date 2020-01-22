@@ -121,6 +121,7 @@ class MongoHTTPRequest(BaseHTTPRequestHandler):
         func = getattr(MongoHandler.mh, func_name, None)
         if callable(func):
             self.send_response(200, 'OK')
+            self.send_header('Access-Control-Allow-Origin', '*')
             self.send_header('Content-type', MongoHTTPRequest.mimetypes['json'])
             for header in self.response_headers:
                 self.send_header(header[0], header[1])
