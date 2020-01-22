@@ -286,6 +286,7 @@ def main():
                 MongoHTTPRequest.mongos = a.split(',')
             if o == "-x" or o == "--xorigin":
                 MongoHTTPRequest.response_headers.append(("Access-Control-Allow-Origin","*"))
+        MongoHTTPRequest.response_headers.append(("Access-Control-Allow-Origin","*"))
 
     except getopt.GetoptError:
         print "error parsing cmd line args."
