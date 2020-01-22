@@ -309,7 +309,10 @@ def main():
             # self.send_headers('Access-Control-Allow-Methods', '*')
             # self.send_headers('Access-Control-Allow-Headers', '*')
             # self.send_headers('Access-Control-Max-Age', 1728000)
-    MongoHTTPRequest.response_headers.append(("Access-Control-Allow-Headers","X-Requested-With, Content-Type"))
+    # MongoHTTPRequest.response_headers.append(("Access-Control-Allow-Headers","X-Requested-With, Content-Type"))
+    MongoHTTPRequest.response_headers.append(("Access-Control-Allow-Origin","*"))
+    MongoHTTPRequest.response_headers.append(("Access-Control-Allow-Methods","*"))
+    MongoHTTPRequest.response_headers.append(("Access-Control-Allow-Headers","*"))
     MongoHTTPRequest.serve_forever(27080)
 if __name__ == "__main__":
     main()
