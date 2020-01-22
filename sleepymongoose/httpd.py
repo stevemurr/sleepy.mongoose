@@ -225,7 +225,9 @@ class MongoHTTPRequest(BaseHTTPRequestHandler):
         if self.process_uri("OPTIONS"):
 
             self.send_response(200, 'OK')
-
+            self.send_headers("Access-Control-Allow-Origin", "*")
+            self.send_headers("Access-Control-Allow-Headers", "*")
+            self.send_headers("Access-Control-Allow-Methods", "*")
             for header in self.response_headers:
                 self.send_header(header[0], header[1])
             self.end_headers()
