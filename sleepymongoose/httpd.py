@@ -222,16 +222,18 @@ class MongoHTTPRequest(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         (uri, args, type) = self.process_uri("OPTIONS")
 
-
-        self.send_response(200, 'OK')
-        self.send_headers("Access-Control-Allow-Origin", "*")
-        self.send_headers("Access-Control-Allow-Headers", "*")
-        self.send_headers("Access-Control-Allow-Methods", "*")
-        for header in self.response_headers:
-            self.send_header(header[0], header[1])
-        self.end_headers()
-
-        return
+        if self.process_uri("OPTIONS"):
+            self.send_response(200, 'OK')
+            self.send_headers("Access-Control-Allow-Origin", "*")
+            self.send_headers("Access-Control-Allow-Headers", "*")
+            self.send_headers("Access-Control-Allow-Methods", "*")
+            for header in self.response_headers:
+                self.send_header(header[0], header[1])
+            self.end_headers()
+            return
+        else:
+            self.send_error(404, 'File not found')
+            return
 
     def do_POST(self):
         (uri, args, type) = self.process_uri("POST")
