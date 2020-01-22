@@ -144,6 +144,15 @@ class MongoHTTPRequest(BaseHTTPRequestHandler):
     def process_uri(self, method):
         if method == "GET":
             (uri, q, args) = self.path.partition('?')
+        elif method == "OPTIONS":
+            self.send_response(200)
+            self.send_headers('Access-Control-Allow-Origin', '*')
+            self.send_headers('Access-Control-Allow-Methods', '*')
+            self.send_headers('Access-Control-Allow-Headers', '*')
+            self.send_headers('Access-Control-Max-Age', 1728000)
+            for header in self.response_headers:
+                self.send_header(header[0], header[1])
+            self.end_headers()
         else:
             uri = self.path
             if 'Content-Type' in self.headers:
