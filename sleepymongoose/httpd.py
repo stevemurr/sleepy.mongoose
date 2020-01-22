@@ -219,7 +219,11 @@ class MongoHTTPRequest(BaseHTTPRequestHandler):
 
         self.call_handler(uri, args)
         #self.wfile.write( self.path )
-
+    def do_OPTIONS(self):
+        self.send_response(200, "ok")
+        self.send_header('Access-Control-Allow-Origin', self.headers.dict['origin'])
+        self.send_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')        
+        self.send_header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
     def do_POST(self):
         (uri, args, type) = self.process_uri("POST")
         if uri == None:
