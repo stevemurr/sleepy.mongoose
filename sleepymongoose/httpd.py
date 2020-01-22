@@ -220,10 +220,22 @@ class MongoHTTPRequest(BaseHTTPRequestHandler):
         self.call_handler(uri, args)
         #self.wfile.write( self.path )
     def do_OPTIONS(self):
-        self.send_response(200, "ok")
-        self.send_header('Access-Control-Allow-Origin', "*")
-        self.send_header('Access-Control-Allow-Methods', "*")
-        self.send_header('Access-Control-Allow-Headers', "*")
+        (uri, args, type) = self.process_uri("OPTIONS")
+
+        if self.process_uri("OPTIONS"):
+
+            self.send_response(200, 'OK')
+
+            for header in self.response_headers:
+                self.send_header(header[0], header[1])
+            self.end_headers()
+
+            return
+
+        else:
+            self.send_error(404, 'File Not Found: '+uri)
+
+            return
 
     def do_POST(self):
         (uri, args, type) = self.process_uri("POST")
@@ -301,10 +313,7 @@ def main():
             # self.send_headers('Access-Control-Allow-Methods', '*')
             # self.send_headers('Access-Control-Allow-Headers', '*')
             # self.send_headers('Access-Control-Max-Age', 1728000)
-    MongoHTTPRequest.response_headers.append(("Access-Control-Allow-Origin","*"))
-    MongoHTTPRequest.response_headers.append(("Access-Control-Allow-Methods","*"))
-    MongoHTTPRequest.response_headers.append(("Access-Control-Allow-Headers","*"))
-    MongoHTTPRequest.response_headers.append(("Access-Control-Max-Age", 1728000))
+    MongoHTTPRequest.response_headers.append(("Access-Control-Allow-Headers","X-Requested-With, Content-Type"))
     MongoHTTPRequest.serve_forever(27080)
 if __name__ == "__main__":
     main()
